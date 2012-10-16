@@ -4,11 +4,15 @@
  */
 
 public class HeapPQueue<T extends Comparable<T>> implements PQueue<T> {
-	private T [] heap;
+	private T [] heap; 
+	private int n; // current number of elements
+	private final int INITIAL_SIZE = 32;
+
 
 	@SuppressWarnings ("unchecked")	
 	public HeapPQueue () {
-		this.heap = (T[]) new Comparable [0];
+		this.heap = (T[]) new Comparable [INITIAL_SIZE];
+		this.n = 0;
 	}
 
 	public void swap (int a, int b) {
@@ -16,27 +20,31 @@ public class HeapPQueue<T extends Comparable<T>> implements PQueue<T> {
 		heap[a] = heap[b];
 		heap[b] = tmp;
 	}
-	
+
 	@SuppressWarnings ("unchecked")	
 	@Override
 	public void insert (T o) {
-		for (int i = 0; i < heap.length; i++)
+		if (n == heap.length) {
+			T [] tmp = (T[]) new Comparable [2*n];
+			System.arraycopy (heap, 0, tmp, 0, n);
+			heap = tmp;
+		}
+		
+		for (int i = 0; i < n; i++)
 			if (o.compareTo(heap[i]) == 0) // Nie dodajemy dwukrotnie elementow
 				return;					   // o tym samym priorytecie
 
-		System.out.println ("+ Adding element: " + o);
-		T[] temp = (T[]) new Comparable [heap.length + 1];
+		//System.out.println("Dlugosc kopca=" + this.heap.length);
+		//System.out.println("Liczba wypelnionych miejsc=" + this.n);
+		
+		heap[n] = o;
 
-		for (int i = 0; i < heap.length; i++)
-			temp[i] = heap[i];
-
-		temp[heap.length] = o;
-		heap = temp;
-
-		for (int i = heap.length-1; i > 0; i--)
-			if (heap[i].compareTo(heap[(i)/2]) > 0) {
-				swap (i, i/2);
+		for (int i = n; i > 0; i--)
+			if (heap[i].compareTo(heap[(i-1)/2]) > 0) {
+				swap (i, (i-1)/2);
 		}
+		n++;
+		System.out.println ("+ Adding element: " + o);
 	}
 
 	@SuppressWarnings ("unchecked")	
@@ -44,23 +52,11 @@ public class HeapPQueue<T extends Comparable<T>> implements PQueue<T> {
 	public T remove () {
 		T removed = heap [0];
 
-		if (heap.length == 1) {
-			heap = (T[]) new Comparable [0];
-			System.out.println ("- Removed element: " + removed);
-			return removed;
-		}
-	
-		int new_length = heap.length-1;
-		T[] tmp = (T[]) new Comparable [new_length];
-		
-		for (int i = 1; i < new_length; i++)
-			tmp[i] = heap[i];
-		tmp[0] = heap[heap.length-1];
-		heap = tmp;
+		heap[0] = heap[n-1];
 
 		int i = 0;
-		while (2*i+1 < heap.length) // dopoki jest chociaz jedno dziecko
-			if (2*i+2 >= heap.length) // jest tylko lewe dziecko
+		while (2*i+1 < n) // dopoki jest chociaz jedno dziecko
+			if (2*i+2 >= n) // jest tylko lewe dziecko
 				if (heap[i].compareTo(heap[2*i+1]) < 0) { // jesli dziecko jest wieksze od rodzica
 					swap(i, 2*i+1);
 					i = 2*i+1;
@@ -78,29 +74,22 @@ public class HeapPQueue<T extends Comparable<T>> implements PQueue<T> {
 					}
 				else
 					i++;
+
+		n--;
 		
 		System.out.println ("- Removed element: " + removed);
 		return removed;
 	}
 
 	public void writeHeap () {
-		if (heap.length == 0) {
-			System.out.println("-!- Heap is empty!");
-			return;
-		}
-
-		System.out.println ("[" + heap[0] + "]");
-		for (int i = 1; i < heap.length; i++) {
-			System.out.print ("[" + heap[i] + "]\t");
-			if (i == 2 || i == 6 || i == 14) 
-				System.out.print("\n");
-		}
-		
-		System.out.println("\n");
+		for (int i = 0; i < n; i++)
+			System.out.print (this.heap[i] + " ");
+			
+		System.out.print("\n"); 
 	}
 
 	public boolean isEmpty () {
-			if (heap.length == 0)
+			if (n == 0)
 				return true;
 			else
 				return false;

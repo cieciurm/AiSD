@@ -10,8 +10,7 @@ public class TestHeapPQueue {
 		System.out.println("               Cwiczenie 2");
 		System.out.println("            Mateusz Cieciura, GR1");
 		
-		
-		System.out.println("\n\tKolejka #1:");
+		System.out.println("\n\tQueue #1:");
 			
 		HeapPQueue<Integer> hpq = new HeapPQueue<Integer> ();
 
@@ -20,13 +19,15 @@ public class TestHeapPQueue {
 		hpq.insert (5);
 		hpq.insert (2);
 		hpq.insert (666); 
+		hpq.insert (1337); 
 
-		hpq.writeHeap();
-		
+
+		//hpq.writeHeap();
+	
 		while ( !hpq.isEmpty() ) 
 			hpq.remove();
 				
-		System.out.println("\n\tKolejka #2:");
+		System.out.println("\n\tQueue #2:");
 
 		HeapPQueue<String> hpq2 = new HeapPQueue<String> ();
 
@@ -35,7 +36,7 @@ public class TestHeapPQueue {
 		hpq2.insert ("ZOSIA");
 		hpq2.insert ("Zosia");
 		 
-		hpq2.writeHeap ();
+		//hpq2.writeHeap ();
 
 		while ( !hpq2.isEmpty() )
 			hpq2.remove();
