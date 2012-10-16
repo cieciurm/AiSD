@@ -33,6 +33,7 @@ public class ListPQueue {
             }
             i = i.goNext();
         }
+        System.out.println("+ Adding element: " + a);
     }
     
     public Comparable remove() {
@@ -54,27 +55,5 @@ public class ListPQueue {
     
     public boolean isEmpty() {
         return (this.head == null) ? true : false;
-    }
-
-    public static void main(String[] args) {
-        ListPQueue list = new ListPQueue(22);
-        list.insert(3);
-        list.insert(77);
-        list.insert(6);
-        list.insert(1);
-        
-        list.writeList();
-
-        while (!list.isEmpty())
-            list.remove();
-
-        System.out.println("---");
-        
-        list.insert("nowa");
-        list.insert("lista");
-        
-        list.writeList();
-
-        
     }
 }
