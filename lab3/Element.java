@@ -41,6 +41,11 @@ public class Element {
         return this.next;
     }
     
+    @Override
+    public String toString () {
+        return this.e.toString();
+    }
+    
    public static void main (String [] args) {
         Element e = new Element (7);
         Element e2 = new Element (10);
@@ -57,5 +62,7 @@ public class Element {
             head = head.goNext();
             //head = head.next;
         }
+        System.out.println("---");
+        System.out.println(e3);
      }
 }
