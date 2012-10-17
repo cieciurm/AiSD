@@ -19,7 +19,7 @@ public class TestHeapPQueue {
 		hpq.insert (5);
 		hpq.insert (2);
 		hpq.insert (666); 
-		hpq.insert (1337); 
+		hpq.insert (1337);
 
 
 		//hpq.writeHeap();

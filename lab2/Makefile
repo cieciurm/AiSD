@@ -16,5 +16,11 @@ HeapPQueue.class: HeapPQueue.java
 TestHeapPQueue.class: TestHeapPQueue.java
 	$(COMPILER) $(FLAGS) $<
 
+time: TestTime.class
+	$(JVM) TestTime
+
+TestTime.class: TestTime.java
+	$(COMPILER) $<
+
 clean:
 	rm *.class
