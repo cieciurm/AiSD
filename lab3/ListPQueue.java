@@ -51,7 +51,7 @@ public class ListPQueue {
             e = e.goNext();
         }
         System.out.println("");
-    }asd
+    }
     
     public boolean isEmpty() {
         return (this.head == null) ? true : false;

@@ -1,4 +1,4 @@
 AiSD
 ====
 
-Repo for my Algorithm and Data Structures course
+Repo for my Algorithms and Data Structures course
