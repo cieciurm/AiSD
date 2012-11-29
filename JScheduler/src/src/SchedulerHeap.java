@@ -23,7 +23,7 @@ public class SchedulerHeap implements SchedulerData {
         }
         this.n = 0;
     }
-    
+
     private int getN() {
         return this.n;
     }
@@ -38,30 +38,81 @@ public class SchedulerHeap implements SchedulerData {
 
     @Override
     public void add(Job a) {
+        //System.out.println("Number of elements: " + this.getN() + ", capacity: " + this.heap.length);
         if (this.n == this.heap.length) {
-            Job[] tmp = new Job[2*n];
+            Job[] tmp = new Job[2 * n];
+            for (int i = n; i < 2 * n; i++) {
+                tmp[i] = new Job();
+            }
             System.arraycopy(heap, 0, tmp, 0, n);
             heap = tmp;
         }
 
-        for (int i = 0; i < n; i++) 
-            if (a.getPriority() == heap[i].getPriority()) // Nie dodajemy dwukrotnie elementow
-                return;                                 // o tym samym priorytecie
-      
+        for (int i = 0; i < n; i++) {
+            if (a.getPriority() == heap[i].getPriority()) // only one element with specific priority
+            {
+                return;
+            }
+        }
+
         heap[n] = a;
         this.heapUp();
         n++;
+
     }
 
-    public void heapUp() {
-        for (int i = n; i > 0; i--)
-            if (heap[i].getPriority() > heap[(i-1)/2].getPriority())
-                this.swap(i, (i-1)/2);
+    private void heapUp() {
+        for (int i = n; i > 0; i--) {
+            if (heap[i].getPriority() > heap[(i - 1) / 2].getPriority()) {
+                this.swap(i, (i - 1) / 2);
+            }
+        }
     }
 
     @Override
     public Job remove() {
-        return null;
+        Job removed = heap[0];
+
+        heap[0] = heap[n - 1];
+        this.heapDown();
+        n--;
+        return removed;
+    }
+
+    private void heapDown() {
+        int i = 0;
+        while (2 * i + 1 < n) // dopoki jest chociaz jedno dziecko
+        {
+            if (2 * i + 2 >= n) // jest tylko lewe dziecko
+            {
+                if (heap[i].getPriority() < heap[2 * i + 1].getPriority()) { // jesli dziecko jest wieksze od rodzica
+                    swap(i, 2 * i + 1);
+                    i = 2 * i + 1;
+                } else {
+                    i++;
+                }
+            } else // jest oboje dzieci
+            if (heap[i].getPriority() < heap[2 * i + 1].getPriority() || heap[i].getPriority() < heap[2 * i + 2].getPriority()) // jedno z dzieci jest wieksze od rodzica
+            {
+                if (heap[2 * i + 1].getPriority() > heap[2 * i + 2].getPriority()) {  // lewe jest wieksze od prawego
+                    swap(i, 2 * i + 1);
+                    i = 2 * i + 1;
+                } else { // prawe jest wieksze od lewego
+                    swap(i, 2 * i + 2);
+                    i = 2 * i + 2;
+                }
+            } else {
+                i++;
+            }
+        }
+    }
+    
+    public void writeHeap () {
+        for (Job i : this.heap) {
+            if (i.getId() != -1) {
+                System.out.println(i);
+            }
+        }
     }
 
     @Override
@@ -74,15 +125,16 @@ public class SchedulerHeap implements SchedulerData {
 
         Random r = new Random();
         for (int i = 0; i < 10; i++) {
-            jh.add(new Job(jh.getN() + 1, r.nextInt(10)));
-        }
-
-        for (Job i : jh.heap) {
-            if (i.getId() != -1) {
-                System.out.println(i);
-            }
+            jh.add(new Job(jh.getN() + 1, r.nextInt(1000)));
         }
         
-        System.out.println("Number of elements: " + jh.getN() + ", capacity: " + jh.heap.length);
+        jh.writeHeap();
+        System.out.println("---");
+        
+        jh.remove();
+        
+        jh.writeHeap();
+
+
     }
 }
