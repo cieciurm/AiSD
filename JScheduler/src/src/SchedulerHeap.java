@@ -14,7 +14,7 @@ public class SchedulerHeap implements SchedulerData {
 
     private Job[] heap;
     private int n; // number of elements in heap
-    private final int INITIAL_SIZE = 2;
+    private final int INITIAL_SIZE = 8;
 
     public SchedulerHeap() {
         this.heap = new Job[INITIAL_SIZE];
@@ -73,9 +73,11 @@ public class SchedulerHeap implements SchedulerData {
     public Job remove() {
         Job removed = heap[0];
 
-        heap[0] = heap[n - 1];
-        this.heapDown();
+        heap[0] = heap[n-1];
         n--;
+        this.heapDown();
+        //heap[n].setId(-1);
+        //heap[n].setPriority(-1);
         return removed;
     }
 
@@ -107,11 +109,16 @@ public class SchedulerHeap implements SchedulerData {
         }
     }
     
+    @Override
+    public boolean isEmpty () {
+        return (n == 0 ) ? true : false;
+    }
+    
     public void writeHeap () {
         for (Job i : this.heap) {
-            if (i.getId() != -1) {
+            //if (i.getId() != -1) {
                 System.out.println(i);
-            }
+            //}
         }
     }
 
@@ -124,16 +131,19 @@ public class SchedulerHeap implements SchedulerData {
         SchedulerHeap jh = new SchedulerHeap();
 
         Random r = new Random();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             jh.add(new Job(jh.getN() + 1, r.nextInt(1000)));
         }
-        
         jh.writeHeap();
         System.out.println("---");
         
+        //while(!jh.isEmpty())
         jh.remove();
         
         jh.writeHeap();
+        System.out.println("---");
+        System.out.println(jh.n);
+        System.out.println(jh.heap[jh.n].getPriority());
 
 
     }
