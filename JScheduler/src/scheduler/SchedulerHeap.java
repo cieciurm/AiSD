@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package src;
+package scheduler;
 
 import java.util.Random;
 
@@ -14,7 +14,7 @@ public class SchedulerHeap implements SchedulerData {
 
     private Job[] heap;
     private int n; // number of elements in heap
-    private final int INITIAL_SIZE = 8;
+    private final int INITIAL_SIZE = 16;
 
     public SchedulerHeap() {
         this.heap = new Job[INITIAL_SIZE];
@@ -57,8 +57,7 @@ public class SchedulerHeap implements SchedulerData {
 
         heap[n] = a;
         this.heapUp();
-        n++;
-
+        n++;    
     }
 
     private void heapUp() {
@@ -71,13 +70,16 @@ public class SchedulerHeap implements SchedulerData {
 
     @Override
     public Job remove() {
+        if (n == 0)
+            return null;
+        
         Job removed = heap[0];
 
-        heap[0] = heap[n-1];
+        heap[0].setId(heap[this.getN()-1].getId());
+        heap[0].setPriority(heap[this.getN()-1].getPriority());
         n--;
+        heap[this.getN()].reset();
         this.heapDown();
-        //heap[n].setId(-1);
-        //heap[n].setPriority(-1);
         return removed;
     }
 
@@ -115,16 +117,31 @@ public class SchedulerHeap implements SchedulerData {
     }
     
     public void writeHeap () {
+        System.out.println("Number of elements:\t" + this.n);
         for (Job i : this.heap) {
-            //if (i.getId() != -1) {
+            if (i.getId() != -1) {
                 System.out.println(i);
-            //}
+            }
         }
     }
 
     @Override
     public void changePriority(int id, int priority) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        boolean found = false;
+        for (Job i : this.heap) {
+            if (i.getId() == id) {
+                i.setPriority(priority);
+                found = true;
+            }
+        }
+        
+        if (found == false) {
+            System.out.println("! Priority not changed. There is no element with such ID!");
+            return;
+        }
+        
+        writeHeap();
+        heapDown();
     }
 
     public static void main(String[] args) {
@@ -134,17 +151,14 @@ public class SchedulerHeap implements SchedulerData {
         for (int i = 0; i < 5; i++) {
             jh.add(new Job(jh.getN() + 1, r.nextInt(1000)));
         }
+
         jh.writeHeap();
         System.out.println("---");
         
-        //while(!jh.isEmpty())
-        jh.remove();
+        //jh.remove();
+        jh.changePriority(1, 1);
         
         jh.writeHeap();
         System.out.println("---");
-        System.out.println(jh.n);
-        System.out.println(jh.heap[jh.n].getPriority());
-
-
     }
 }

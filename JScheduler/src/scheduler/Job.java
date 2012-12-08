@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package src;
+package scheduler;
 
 /**
  *
@@ -38,15 +38,19 @@ public class Job {
         this.priority = priority;
     }
     
+    public void reset () {
+        this.id = -1;
+        this.priority = -1;
+    }
+    
     @Override
     public String toString () {
         return "#" + this.id + " p:" + this.priority;
     }
     
     public static void main(String[] args) {
-        Job a = new Job();
-        Job b = new Job(1,5);
-        System.out.println(a);
-        System.out.println(b);
+        Job t[] = new Job [10];
+        t[0] = new Job();
+        System.out.println(t[0]);
     }
 }
