@@ -1,4 +1,4 @@
-package scheduler;
+package src.scheduler;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
