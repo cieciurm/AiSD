@@ -22,6 +22,10 @@ public class Parser {
         this.resetCache();
     }
     
+    public BufferedReader getBr() {
+        return this.br;
+    }
+    
     private void resetCache() {
         this.cache[0] = -1;
         this.cache[1] = -1;
@@ -55,15 +59,15 @@ public class Parser {
         }
             
         if (tmp[0].equals("jobpush")) {
-            System.out.println("Push: " + tmp[1] + ", " + tmp[2]);
+            //System.out.println("Push: " + tmp[1] + ", " + tmp[2]);
             this.setCache(Integer.parseInt(tmp[1]), Integer.parseInt(tmp[2]));
             return 1;
         } else if (tmp[0].equals("jobpop")) {
-            System.out.println("Pop");
+            //System.out.println("Pop");
             this.resetCache();
             return 2;
         } else if (tmp[0].equals("jobchange")) {
-            System.out.println("Change: " + tmp[1] + ", " + tmp[2]);
+            //System.out.println("Change: " + tmp[1] + ", " + tmp[2]);
             this.setCache(Integer.parseInt(tmp[1]), Integer.parseInt(tmp[2]));
             return 3;
         }
