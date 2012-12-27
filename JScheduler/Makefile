@@ -5,6 +5,9 @@ JSCHEDULER = src.scheduler.JScheduler
 JScheduler.class: 
 	$(COMP) -sourcepath $(CURDIR) src/scheduler/JScheduler.java
 
+info: JScheduler.class
+	$(JVM) -classpath $(CURDIR) $(JSCHEDULER)
+
 test1: JScheduler.class
 	$(JVM) -classpath $(CURDIR) $(JSCHEDULER) -f test/test1
 
