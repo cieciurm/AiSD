@@ -1,4 +1,4 @@
-package src.scheduler;
+package scheduler;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -11,12 +11,17 @@ public class Parser {
     private int [] cache; /* stores the id and priority read 
                              from input (for push and change operations) */
     
-    public Parser(String filename) throws FileNotFoundException {
+    public Parser(String filename) {
         try {
             this.br = new BufferedReader(new FileReader(filename));
+        } catch (NullPointerException e) {
+					//System.out.println(e.getMessage());
+            System.out.println("# Error! File not found!");
+						scheduler.JScheduler.help();
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+            System.out.println("# Error! File not found!");
+						scheduler.JScheduler.help();
+				}
         
         this.cache = new int [2];
         this.resetCache();

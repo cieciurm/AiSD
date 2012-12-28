@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.scheduler;
+package scheduler;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,23 +15,25 @@ public class JScheduler {
   private SchedulerHeap sh;
   private Parser p;
   
-  public JScheduler(String filename) {
-      try {
+  public JScheduler(String filename) throws FileNotFoundException, NullPointerException {
+		//try {
         this.sh = new SchedulerHeap();
         this.p = new Parser(filename);
-      } catch (Exception e) {
-          System.out.println(e.getMessage());
-      } 
+				//} catch (FileNotFoundException e) {
+				//System.out.println("# Error! File not found!");
+				//help();
+				//} 
   }
 
-  private static void help() {
+	/* Public so it can be used (displayed) while opening file in Parser.java */
+  public static void help() {
       System.out.println ("# ");
       System.out.println ("# Usage:");
-      System.out.println ("# java JScheduler -f file_with_orders");
+      System.out.println ("# java -classpath <current_dirrectory> src.scheduler.JScheduler -f <file_with_orders>");
       System.out.println ("# ");
   }
 
-  public static void main(String [] args) throws IOException {
+  public static void main(String [] args) throws NullPointerException, IOException {
       
       if (args.length <= 1) {
           System.out.println("# Error! Too less parameters!");
@@ -45,7 +47,8 @@ public class JScheduler {
           return;
       }
       
-      JScheduler scheduler = new JScheduler("test2.lol");
+			JScheduler scheduler = new JScheduler(args[1]);
+
       String s;
       int operation = 0;
       //System.out.println(scheduler.sh.isEmpty());
