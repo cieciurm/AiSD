@@ -14,13 +14,15 @@ public class Parser {
     public Parser(String filename) {
         try {
             this.br = new BufferedReader(new FileReader(filename));
-        } catch (NullPointerException e) {
-					//System.out.println(e.getMessage());
-            System.out.println("# Error! File not found!");
-						scheduler.JScheduler.help();
+        //} catch (NullPointerException e) {
+					////System.out.println(e.getMessage());
+            //System.out.println("# Error! File not found!");
+						//scheduler.JScheduler.help();
+						//return;
         } catch (FileNotFoundException e) {
             System.out.println("# Error! File not found!");
 						scheduler.JScheduler.help();
+						System.exit(0);
 				}
         
         this.cache = new int [2];
