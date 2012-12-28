@@ -26,11 +26,11 @@ public class JScheduler {
   }
   
   private void writeStats() {
-      System.out.println("*** Stats: ***");
+      System.out.println("****Stats*****");
       System.out.println("* Added: " + this.stats[0]);
       System.out.println("* Removed: " + this.stats[1]);
       System.out.println("* Changed: " + this.stats[2]);
-      System.out.println("******");
+      System.out.println("**************");
   }
 
   public static void main(String [] args) throws IOException {
@@ -51,7 +51,7 @@ public class JScheduler {
       String s;
       int operation = 0;
       //System.out.println(scheduler.sh.isEmpty());
-      
+ 
       while ((s  = scheduler.p.getBr().readLine()) != null && !s.equals ("")) {
           operation = scheduler.p.getNextOrder(s);
           if (operation == 1) {
@@ -70,10 +70,7 @@ public class JScheduler {
               scheduler.stats[2]++;
           }
       }
-      
       scheduler.sh.writeHeap();
       scheduler.writeStats();
-      
-
   }
 }
