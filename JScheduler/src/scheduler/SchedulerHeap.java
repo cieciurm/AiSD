@@ -140,7 +140,7 @@ public class SchedulerHeap implements SchedulerData {
             return;
         }
         
-        writeHeap();
+        //writeHeap();
         heapDown();
     }
 
