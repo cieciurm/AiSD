@@ -19,9 +19,11 @@ test2: JScheduler.class
 test3: JScheduler.class
 	$(JVM) -classpath $(SRCDIR) $(JSCHEDULER) -f test/test3
 
-stats:
-	javac -sourcepath src/ -cp vendor/jamon-2.73.jar src/scheduler/TestJScheduler.java
-	java -cp src/:vendor/jamon-2.73.jar scheduler.TestJScheduler 1000 # here enter the number of jobs
+stats: StatsGenerator.class
+	java -cp src/:vendor/jamon-2.73.jar scheduler.StatsGenerator 1000 # here enter the number of jobs
+
+StatsGenerator.class:
+	javac -sourcepath src/ -cp vendor/jamon-2.73.jar src/scheduler/StatsGenerator.java
 
 clean:
 	cd src/scheduler && rm *.class 
