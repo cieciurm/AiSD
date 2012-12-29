@@ -1,0 +1,20 @@
+**************************************************
+* Adding a job to the scheduler already containing 1000 jobs
+* Number of repetitions: 100.0
+* Average time of adding [ms]: 2.54
+* Started: Sat Dec 29 22:25:43 CET 2012
+* Started: Sat Dec 29 22:29:47 CET 2012
+**************************************************
+* Removing a job from the scheduler already containing 1000 jobs
+* Number of repetitions: 100.0
+* Average time of removing [ms]: 0.05
+* Started: Sat Dec 29 22:25:43 CET 2012
+* Started: Sat Dec 29 22:29:47 CET 2012
+**************************************************
+* Changing job's priority in the scheduler already containing 1000 jobs
+* Number of repetitions: 100.0
+* Average time of changing priority [ms]: 2.86
+* Started: Sat Dec 29 22:25:43 CET 2012
+* Started: Sat Dec 29 22:29:47 CET 2012
+**************************************************
+
