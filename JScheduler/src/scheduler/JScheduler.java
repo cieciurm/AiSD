@@ -17,6 +17,15 @@ public class JScheduler {
       this.stats = new int [3];
   }
 
+	public JScheduler() {
+			this.sh = new SchedulerHeap();
+			this.stats = new int [3];
+	}
+
+	public SchedulerHeap getSh() {
+		return this.sh;
+	}
+
 	/* Public so it could be accessed from Parser.java */
   public static void help() {
       System.out.println ("# ");
