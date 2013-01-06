@@ -4,27 +4,31 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+
 
 public class Parser {
     private BufferedReader br; 
     private int [] cache; /* stores the id and priority read 
                              from input (for push and change operations) */
     
-    public Parser(String filename) {
+    public Parser(String filename) throws FileNotFoundException {
         try {
             this.br = new BufferedReader(new FileReader(filename));
-        //} catch (NullPointerException e) {
-					////System.out.println(e.getMessage());
-            //System.out.println("# Error! File not found!");
-						//scheduler.JScheduler.help();
-						//return;
         } catch (FileNotFoundException e) {
             System.out.println("# Error! File not found!");
-						scheduler.JScheduler.help();
-						System.exit(0);
-				}
+            scheduler.JScheduler.help();
+            System.exit(0);
+        }
         
+        this.cache = new int [2];
+        this.resetCache();
+    }
+    
+    public Parser(InputStream in) {
+        this.br = new BufferedReader(new InputStreamReader(in));
         this.cache = new int [2];
         this.resetCache();
     }
