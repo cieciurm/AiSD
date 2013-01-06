@@ -5,7 +5,7 @@ JSCHEDULER = scheduler.JScheduler
 SRCDIR = src/
 
 talk: JScheduler.class
-	echo "#\n# Usage:\n# java -classpath <current_dirrectory> src.scheduler.JScheduler -f <file_with_orders>\n#"
+	echo "#\n# Usage:\n# java -classpath src/ scheduler.JScheduler -f <file_with_orders>\n#"
 
 JScheduler.class: 
 	$(COMP) -sourcepath $(SRCDIR) src/scheduler/JScheduler.java
