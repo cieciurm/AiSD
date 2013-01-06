@@ -117,7 +117,7 @@ public class SchedulerHeap implements SchedulerData {
     }
     
     public void writeHeap () {
-        System.out.println("Number of elements:\t" + this.n);
+        System.out.println("# Number of elements: " + this.n);
         for (Job i : this.heap) {
             if (i.getId() != -1) {
                 System.out.println(i);
@@ -140,7 +140,7 @@ public class SchedulerHeap implements SchedulerData {
             return;
         }
         
-        //writeHeap();
+        //witeHeap();
         heapDown();
     }
 
