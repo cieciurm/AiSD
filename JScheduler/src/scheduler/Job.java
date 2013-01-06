@@ -45,7 +45,7 @@ public class Job {
     
     @Override
     public String toString () {
-        return "#" + this.id + " p:" + this.priority;
+        return "id: " + this.id + " priority: " + this.priority;
     }
     
     public static void main(String[] args) {
