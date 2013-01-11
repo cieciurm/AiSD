@@ -1,11 +1,11 @@
 JVM = java
 COMP = javac
 JSCHEDULER = scheduler.JScheduler
-#SRCDIR = $(CURDIR)/src
 SRCDIR = src/
 
-talk: JScheduler.class
-	echo -e "#\n# Usage:\n# java -classpath src/ scheduler.JScheduler [-f <file_with_orders>]\n#"
+default: JScheduler.class
+	$(shell export CLASSPATH=$(SRCDIR))
+	echo -e "#\n# Usage:\n# java scheduler.JScheduler [-f <file_with_orders>]\n#"
 
 JScheduler.class: 
 	$(COMP) -sourcepath $(SRCDIR) src/scheduler/JScheduler.java
