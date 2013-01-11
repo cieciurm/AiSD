@@ -1,50 +1,42 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package scheduler;
 
-/**
- *
- * @author mateusz
- */
 public class Job {
     private int id;
     private int priority;
     
-    public Job (int i, int p) {
+    public Job(int i, int p) {
         this.id = i;
         this.priority = p;
     }
     
-    public Job () {
+    public Job() {
         this.id = -1;
         this.priority = -1;
     }
     
-    public int getId () {
+    public int getId() {
         return this.id;
     }
     
-    public int getPriority () {
+    public int getPriority() {
         return this.priority;
     }
     
-    public void setId (int id) {
+    public void setId(int id) {
         this.id = id;
     }
     
-    public void setPriority (int priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
     
-    public void reset () {
+    public void reset() {
         this.id = -1;
         this.priority = -1;
     }
     
     @Override
-    public String toString () {
+    public String toString() {
         return "id: " + this.id + " priority: " + this.priority;
     }
     

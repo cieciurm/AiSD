@@ -40,8 +40,8 @@ public class SchedulerHeap implements SchedulerData {
     public void add(Job a) {
         //System.out.println("Number of elements: " + this.getN() + ", capacity: " + this.heap.length);
         if (this.n == this.heap.length) {
-            Job[] tmp = new Job[2 * n];
-            for (int i = n; i < 2 * n; i++) {
+            Job[] tmp = new Job[2*n];
+            for (int i = n; i < 2*n; i++) {
                 tmp[i] = new Job();
             }
             System.arraycopy(heap, 0, tmp, 0, n);
@@ -62,8 +62,8 @@ public class SchedulerHeap implements SchedulerData {
 
     private void heapUp() {
         for (int i = n; i > 0; i--) {
-            if (heap[i].getPriority() > heap[(i - 1) / 2].getPriority()) {
-                this.swap(i, (i - 1) / 2);
+            if (heap[i].getPriority() > heap[(i-1)/2].getPriority()) {
+                this.swap(i, (i-1)/2);
             }
         }
     }
@@ -85,25 +85,23 @@ public class SchedulerHeap implements SchedulerData {
 
     private void heapDown() {
         int i = 0;
-        while (2 * i + 1 < n) // dopoki jest chociaz jedno dziecko
-        {
-            if (2 * i + 2 >= n) // jest tylko lewe dziecko
-            {
-                if (heap[i].getPriority() < heap[2 * i + 1].getPriority()) { // jesli dziecko jest wieksze od rodzica
-                    swap(i, 2 * i + 1);
-                    i = 2 * i + 1;
+        while (2 * i + 1 < n) { // until there's at least one child
+            if (2 * i + 2 >= n) { // if there's only one child
+                if (heap[i].getPriority() < heap[2*i+1].getPriority()) { // if child is greater than parent
+                    swap(i, 2*i+1);
+                    i = 2*i + 1;
                 } else {
                     i++;
                 }
-            } else // jest oboje dzieci
-            if (heap[i].getPriority() < heap[2 * i + 1].getPriority() || heap[i].getPriority() < heap[2 * i + 2].getPriority()) // jedno z dzieci jest wieksze od rodzica
-            {
-                if (heap[2 * i + 1].getPriority() > heap[2 * i + 2].getPriority()) {  // lewe jest wieksze od prawego
-                    swap(i, 2 * i + 1);
-                    i = 2 * i + 1;
-                } else { // prawe jest wieksze od lewego
-                    swap(i, 2 * i + 2);
-                    i = 2 * i + 2;
+            } else // there's both children
+            if (heap[i].getPriority() < heap[2*i+1].getPriority() || heap[i].getPriority() < heap[2*i+2].getPriority()) {
+							// jedno z dzieci jest wieksze od rodzica
+                if (heap[2*i+1].getPriority() > heap[2*i+2].getPriority()) {  // left child > right child
+                    swap(i, 2*i+1);
+                    i = 2*i+1;
+                } else { // right child > left child
+                    swap(i, 2*i+2);
+                    i = 2*i+2;
                 }
             } else {
                 i++;
