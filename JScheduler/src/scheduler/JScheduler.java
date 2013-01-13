@@ -1,7 +1,12 @@
 package scheduler;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class JScheduler {
     private SchedulerHeap sh; 
@@ -52,14 +57,25 @@ public class JScheduler {
             System.out.println("# Changed jobs: " + this.stats[2]);
             System.out.println("##################");
     }
+    
+    private void writeStats (FileWriter fr) throws IOException {
+            fr.write("\n##### Stats ######\n");
+            fr.write("# Pushed jobs: " + this.stats[0] + "\n");
+            fr.write("# Popped jobs: " + this.stats[1] + "\n");
+            fr.write("# Changed jobs: " + this.stats[2] + "\n");
+            fr.write("##################");    
+    }
 
     public static void main(String [] args) throws IOException {
-            
+
             JScheduler scheduler = null;
+            
+            boolean fromStdIn = false;
 
             if (args.length == 0) { // no arguments - reading from System.in
                 System.out.println("# Reading from Standard Input");
                 scheduler = new JScheduler(System.in);
+                fromStdIn = true;
             } else if (args.length == 1) {
                 System.out.println("# Error! Too less parameters!");
                 help();
@@ -70,6 +86,16 @@ public class JScheduler {
                 return;
             } else if (args[0].equals("-f")) 
                 scheduler = new JScheduler(args[1]);
+            
+            // Initialization of output file with logs
+            FileWriter outputFileWriter = null;
+            if (!fromStdIn) {
+                DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy-HH:mm:ss");
+                Date currentDate = new Date();
+                String outputFileName = "log-jscheduler-" + dateFormat.format(currentDate);
+                File outputFile = new File(outputFileName);
+                outputFileWriter = new FileWriter(outputFile);
+            }
             
             String s;
             int operation = 0;
@@ -86,18 +112,38 @@ public class JScheduler {
                         //System.out.println("Removing");
                         Job removed = scheduler.getSh().remove();
                         scheduler.stats[1]++;
-                        if (removed == null)
-                            System.out.println("No more jobs. There's nothing to be popped.");
-                        else
-                            System.out.println("Popped job (" + removed + ")");
+                        if (fromStdIn == true) {
+                            if (removed == null)
+                                System.out.println("No more jobs. There's nothing to be popped.");
+                            else
+                                System.out.println("Popped job (" + removed + ")");
+                        } else {
+                            if (removed == null)
+                                outputFileWriter.write("No more jobs. There's nothing to be popped.\n");
+                            else
+                                outputFileWriter.write("Popped job (" + removed + ")\n");
+                        }
                     } else if (operation == 3) {
                         //System.out.println("Changing");
                         int [] tmp = scheduler.getParser().getCache();
-                        scheduler.getSh().changePriority(tmp[0], tmp[1]);
+                        boolean changed = scheduler.getSh().changePriority(tmp[0], tmp[1]);
                         scheduler.stats[2]++;
+                        if (!changed) {
+                            if (fromStdIn) {
+                                System.out.println("Priority not changed. There's no element with such ID!");
+                            } else {
+                                outputFileWriter.write("Priority not changed. There's no element with such ID!\n");
+                            }
+                        }
                     }
             }
-            scheduler.getSh().writeHeap();
-            scheduler.writeStats();
+            if (fromStdIn) {
+                scheduler.getSh().writeHeap();
+                scheduler.writeStats();
+            } else {
+                scheduler.getSh().writeHeap(outputFileWriter);
+                scheduler.writeStats(outputFileWriter);
+                outputFileWriter.close();
+            }
     }
 }

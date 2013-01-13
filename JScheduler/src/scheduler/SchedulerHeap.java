@@ -4,6 +4,8 @@
  */
 package scheduler;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -114,6 +116,7 @@ public class SchedulerHeap implements SchedulerData {
     }
     
     public void writeHeap () {
+        System.out.println("# Jobs left after all operations");
         System.out.println("# Number of elements: " + this.n);
         for (Job i : this.heap) {
             if (i.getId() != -1) {
@@ -121,9 +124,19 @@ public class SchedulerHeap implements SchedulerData {
             }
         }
     }
+    
+    public void writeHeap (FileWriter fr) throws IOException {
+        fr.write("# Jobs left after all operations\n");
+        fr.write("# Number of elements: " + this.n + "\n");
+        for (Job i : this.heap) {
+            if (i.getId() != -1) {
+                fr.write("id: " + i.getId() + ", priority: " + i.getPriority() + "\n");
+            }
+        }
+    }
 
     @Override
-    public void changePriority(int id, int priority) {
+    public boolean changePriority(int id, int priority) {
         boolean found = false;
         for (Job i : this.heap) {
             if (i.getId() == id) {
@@ -132,13 +145,12 @@ public class SchedulerHeap implements SchedulerData {
             }
         }
         
-        if (found == false) {
-            System.out.println("Priority not changed. There's no element with such ID.");
-            return;
-        }
+        if (found == false)
+            return false; // returns false if such ID wasn't found
         
         //witeHeap();
         heapDown();
+        return true;
     }
 
     public static void main(String[] args) {
