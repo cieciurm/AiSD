@@ -5,7 +5,7 @@ import com.jamonapi.MonitorFactory;
 import java.util.Random;
 
 public class StatsGenerator {
-    private final static int NUMBER_OF_REPETITIONS = 100;
+    private final static int NUMBER_OF_REPETITIONS = 1;
     
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -13,7 +13,7 @@ public class StatsGenerator {
             return;
         }
             
-        int size = Integer.parseInt(args[0]);
+        int size = 100000; //Integer.parseInt(args[0]);
         
         JScheduler scheduler = new JScheduler();
         Monitor add = null;
@@ -24,10 +24,11 @@ public class StatsGenerator {
         for (int j = 1; j <= NUMBER_OF_REPETITIONS; j++) {
             /* Creating scheduler */
             for (int i = 0; i < size; i++) {
+								System.out.println("Adding " + i + ". element");
                 int p = Math.abs((new Random()).nextInt());
                 scheduler.getSh().add(new Job(i, p));
             }
-
+						System.out.println("Starting monitoring");
             /* Monitoring */
             add = MonitorFactory.start("* Adding a job to the scheduler already containing " + size + " jobs");
             int m = Math.abs((new Random()).nextInt());
