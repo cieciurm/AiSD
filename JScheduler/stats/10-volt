@@ -1,0 +1,19 @@
+**************************************************
+* Adding a job to the scheduler already containing 10 jobs
+* Number of repetitions: 100.0
+* Average time of adding [ms]: 0.04
+* Started: Sun Jan 13 15:45:49 CET 2013
+* Started: Sun Jan 13 15:45:49 CET 2013
+**************************************************
+* Removing a job from the scheduler already containing 10 jobs
+* Number of repetitions: 100.0
+* Average time of removing [ms]: 0.06
+* Started: Sun Jan 13 15:45:49 CET 2013
+* Started: Sun Jan 13 15:45:49 CET 2013
+**************************************************
+* Changing job's priority in the scheduler already containing 10 jobs
+* Number of repetitions: 100.0
+* Average time of changing priority [ms]: 0.12
+* Started: Sun Jan 13 15:45:49 CET 2013
+* Started: Sun Jan 13 15:45:49 CET 2013
+**************************************************
