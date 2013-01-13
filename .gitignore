@@ -3,3 +3,11 @@
 # Package Files #
 *.war
 *.ear
+
+# Strange TeXmaker files
+*.aux
+*.log
+*.pdf
+*.gz
+*.toc
+*.out
