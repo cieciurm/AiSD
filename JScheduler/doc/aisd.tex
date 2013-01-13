@@ -104,6 +104,9 @@ $ ./sheduler
 > jobpop
 < Job 3
 \end{lstlisting}
+
+Dane wyjściowe są wyprowadzane na takie samo wyjście, jak dane wejściowe, tj. jeśli wczytano polecenia z pliku powstanie plik wynikowy ze statystyką przeprowadzonych operacji, jeśli wpisano je z klawiatury to zostaną one wyświetlone na wyjście standardowe.
+
 \section{Główna struktura danych}
 
 Podstawowym zagadnieniem było wybranie struktury danych do przechowywania elementów. Musi ona spewniać pewne kryteria:
@@ -181,7 +184,7 @@ Przykład przechowywania kopca binarnego w tablicy:
 \vspace{5pt}
 
 W pierwszej komórce tablicy znajduje się korzeń. Indeksy lewego i prawego dziecka węzła \textit{i} to odpowiedno
- \textit{2*i+1} oraz \textit{2i+2}. Indeks rodzica węzła i niebędącego korzeniem to \textit{(i-1)/2}
+ \textit{$2*i+1$} oraz \textit{$2i+2$}. Indeks rodzica węzła to \textit{$\frac{(i-1)}{2}$}.
 
 \section{Implementacja modułu Scheduler}
 
@@ -206,13 +209,172 @@ Wydzialono następujące klasy:
 
 \subsubsection{Operacje na kopcu}
 
-yada yada
+Do poprawiania relacji w kopcu służą dwie metody z klasy \texttt{SchedulerHeap}: \texttt{heapUp()} oraz \texttt{heapDown()}.
+
+Po dodaniu elementu wykorzystywana jest pierwsza z nich:
+
+\begin{lstlisting}
+    private void heapUp() {
+        for (int i = n; i > 0; i--) {
+            if (heap[i].getPriority() > heap[(i-1)/2].getPriority()) {
+                this.swap(i, (i-1)/2);
+            }
+        }
+    }
+\end{lstlisting}
+
+Natomiast po usunięciu elementu i zmianie priorytetu druga z nich:
+
+\begin{lstlisting}
+    private void heapDown() {
+        int i = 0;
+        while (2 * i + 1 < n) { // until there's at least one child
+            if (2 * i + 2 >= n) { // if there's only one child
+                if (heap[i].getPriority() < heap[2*i+1].getPriority()) { // if child is greater than parent
+                    swap(i, 2*i+1);
+                    i = 2*i + 1;
+                } else {
+                    i++;
+                }
+            } else // there's both children
+            if (heap[i].getPriority() < heap[2*i+1].getPriority() || heap[i].getPriority() < heap[2*i+2].getPriority()) {
+							// jedno z dzieci jest wieksze od rodzica
+                if (heap[2*i+1].getPriority() > heap[2*i+2].getPriority()) {  // left child > right child
+                    swap(i, 2*i+1);
+                    i = 2*i+1;
+                } else { // right child > left child
+                    swap(i, 2*i+2);
+                    i = 2*i+2;
+                }
+            } else {
+                i++;
+            }
+        }
+    }
+\end{lstlisting}
+
 
 \section{Testy}
 
-\subsection{Tryb wykonywania poleceń}
+Ze względu na charakter testów można podzielić je na dwie kategorie:
 
-\subsubsection{Tryb zbierania statystyk}
+\begin{itemize}
+	\item testy interaktywne
+	\item testy dla badań statystycznych
+\end{itemize}
+
+W pierwszym przypadku jest to zbiór testów, które sprawdzają, jak działa program w aspekcie opisanym w funkcjonalności. To znaczy wczytywane są plik z rozkazami lub są wprowadzane one z klawiatury, a następnie moduł generuje pliki wynikowe. W plikach tych znajdują się logi zdjętych zadań w postaci:
+
+\begin{lstlisting}
+Popped job (id: 3 priority: 711)
+\end{lstlisting}
+
+Oraz informacje o niepowodzeniach przy zmianie priorytetu:
+
+\begin{lstlisting}
+Priority not changed. There's no element with such ID!
+\end{lstlisting}
+
+Na końcu znajdują się dane dot. obecnej struktury schedulera (po wykonaniu wszystkich zadań) oraz podsumowanie wszystkich operacji:
+
+\begin{lstlisting}
+# Jobs left after all operations
+# Number of elements: 1
+id: 99, priority: 561 
+
+##### Stats ######
+# Pushed jobs: 28
+# Popped jobs: 28
+# Changed jobs: 42
+##################
+\end{lstlisting}
+
+\subsection{Tryb normalny}
+
+Zgodnie z komunikatami wyświetlanymi przez program, aby uruchomić program należy posłużyć się następującą składanią:
+
+\begin{lstlisting}[caption=Opis wywołania progamu]
+java -cp src/ scheduler.JScheduler [-f <file_with_orders>]
+\end{lstlisting}
+
+z poziomu katalogu \texttt{.../JScheduler/}.
+
+Jak widać, opcja \texttt{-f} jest opcjonalna. Po zatwierdzeniu polecenia bez niej wchodzimy w tryb interaktywny:
+
+\begin{lstlisting}[caption=Przykład wywołania progamu w trybie interaktywnym]
+# Reading from Standard Input
+jobpush 1 10
+jobpush 2 20
+jobpush 3 30 
+jobchange 1 100
+jobpop
+Popped job (id: 1 priority: 100)
+jobpop
+Popped job (id: 3 priority: 30)
+jobpop
+Popped job (id: 2 priority: 20)
+jobpop
+No more jobs. There's nothing to be popped.
+# Jobs left after all operations
+# Number of elements: 0
+##### Stats ######
+# Pushed jobs: 3
+# Popped jobs: 4
+# Changed jobs: 1
+##################
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Przykład wywołania progamu z plikiem wejściowym]
+java -cp src/ scheduler.JScheduler -f test/test3]
+\end{lstlisting}
+
+Plik wejściowy ma następującą budowę:
+
+\begin{lstlisting}[caption=Plik testowy test3]
+jobpush 1 10
+jobpush 2 20
+jobpush 3 30
+jobpush 4 40
+jobpush 5 50
+jobpush 6 60
+jobpush 7 70
+jobpush 8 80
+jobpush 9 90
+jobpush 10 100
+jobpop 
+\end{lstlisting}
+
+Po wykonaniu się programu logi zostały zapisane w pliku \texttt{log-jscheduler-13.01.13-17:43:51}. Jego zawartość jest następująca:
+
+\begin{lstlisting}[caption=Zawartość pliku wynikowego]
+Popped job (id: 10 priority: 100)
+# Jobs left after all operations
+# Number of elements: 9
+id: 9, priority: 90
+id: 8, priority: 80
+id: 6, priority: 60
+id: 7, priority: 70
+id: 3, priority: 30
+id: 2, priority: 20
+id: 5, priority: 50
+id: 1, priority: 10
+id: 4, priority: 40
+
+##### Stats ######
+# Pushed jobs: 10
+# Popped jobs: 1
+# Changed jobs: 0
+##################
+\end{lstlisting}
+
+\subsection{Tryb zbierania statystyk}
+
+W tym trybie za pomocą specjalnej klasy \texttt{StatsGenerator.java} przygotowano wyniki do statystyk.
+Stworzono kopce o wielkości 10, 100, 1 000, 10 000, 100 000 oraz 500 000 elementów, następnie na każdym z nim operacje dodania, usunięcia i zmiany priorytetu. Operacje te zostały wykonane wielokrotnie (w miarę możliwości - dla 3 największych kopców jednokrotnie, dla kolejnych wielkości 100 lub 10 razy) dla uśrednienia wyników.
+
+Pomiar średnich czasów został wykonany biblioteką \texttt{JAMon}, która została dołączona do kodu źródłowego programu.
+
+Testy są odtwarzalne za pomocą poleceń \texttt{Makefile}'a.
 
 \subsubsection{Wyniki testów}
 
