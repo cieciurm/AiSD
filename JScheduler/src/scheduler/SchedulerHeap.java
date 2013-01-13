@@ -50,9 +50,7 @@ public class SchedulerHeap implements SchedulerData {
 
         for (int i = 0; i < n; i++) {
             if (a.getPriority() == heap[i].getPriority()) // only one element with specific priority
-            {
                 return;
-            }
         }
 
         heap[n] = a;
@@ -73,13 +71,14 @@ public class SchedulerHeap implements SchedulerData {
         if (n == 0)
             return null;
         
-        Job removed = heap[0];
-
+        Job removed = new Job(heap[0].getId(), heap[0].getPriority());
+        
         heap[0].setId(heap[this.getN()-1].getId());
         heap[0].setPriority(heap[this.getN()-1].getPriority());
         n--;
         heap[this.getN()].reset();
         this.heapDown();
+        
         return removed;
     }
 
@@ -134,7 +133,7 @@ public class SchedulerHeap implements SchedulerData {
         }
         
         if (found == false) {
-            System.out.println("! Priority not changed. There is no element with such ID!");
+            System.out.println("Priority not changed. There's no element with such ID.");
             return;
         }
         
@@ -153,10 +152,9 @@ public class SchedulerHeap implements SchedulerData {
         jh.writeHeap();
         System.out.println("---");
         
-        //jh.remove();
-        jh.changePriority(1, 1);
+        jh.remove();
         
-        jh.writeHeap();
+               jh.writeHeap();
         System.out.println("---");
     }
 }

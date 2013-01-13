@@ -84,8 +84,12 @@ public class JScheduler {
                         scheduler.stats[0]++;
                     } else if (operation == 2) {
                         //System.out.println("Removing");
-                        scheduler.getSh().remove();
+                        Job removed = scheduler.getSh().remove();
                         scheduler.stats[1]++;
+                        if (removed == null)
+                            System.out.println("No more jobs. There's nothing to be popped.");
+                        else
+                            System.out.println("Popped job (" + removed + ")");
                     } else if (operation == 3) {
                         //System.out.println("Changing");
                         int [] tmp = scheduler.getParser().getCache();
