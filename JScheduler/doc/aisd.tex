@@ -1,5 +1,4 @@
 \documentclass[12pt,a4paper]{article}
-
 %\usepackage[lmargin=1.9cm, rmargin=1.9cm,tmargin=1.9cm,bmargin=1.9cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -9,10 +8,7 @@
 \usepackage{color}
 \usepackage{hyperref}
 
-
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
-
-% Definicja kodu
 \lstset{
 	language=Java,
     basicstyle=\footnotesize \ttfamily,
@@ -25,7 +21,10 @@
     breaklines=true,
     frame=single
 }
-
+%Removes border from table of contents
+\hypersetup{%
+    pdfborder = {0 0 0}
+}
 \begin{document}
 
 \begin{titlepage}
