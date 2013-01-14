@@ -8,6 +8,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.jamonapi.Monitor;
+import com.jamonapi.MonitorFactory;
+
 public class JScheduler {
     private SchedulerHeap sh; 
     private Parser p;
@@ -59,11 +62,21 @@ public class JScheduler {
     }
     
     private void writeStats (FileWriter fr) throws IOException {
-            fr.write("\n##### Stats ######\n");
+            fr.write("##### Stats ######\n");
             fr.write("# Pushed jobs: " + this.stats[0] + "\n");
             fr.write("# Popped jobs: " + this.stats[1] + "\n");
             fr.write("# Changed jobs: " + this.stats[2] + "\n");
-            fr.write("##################");    
+            fr.write("##################\n");   
+    }
+    
+    private void writeTime(Monitor m) {
+            System.out.println("# Time elapsed: " + m.getAvg() + "ms");
+            System.out.println("##################");         
+    }
+    
+    private void writeTime(Monitor m, FileWriter fr) throws IOException {
+            fr.write("# Time elapsed: " + m.getAvg() + " ms\n");
+            fr.write("##################\n");         
     }
 
     public static void main(String [] args) throws IOException {
@@ -100,7 +113,7 @@ public class JScheduler {
             String s;
             int operation = 0;
             //System.out.println(scheduler.sh.isEmpty());
-
+            Monitor monitor = MonitorFactory.start();
             while ((s = scheduler.getParser().getBr().readLine()) != null && !s.equals ("")) {
                     operation = scheduler.getParser().getNextOrder(s);
                     if (operation == 1) {
@@ -129,20 +142,23 @@ public class JScheduler {
                         boolean changed = scheduler.getSh().changePriority(tmp[0], tmp[1]);
                         scheduler.stats[2]++;
                         if (!changed) {
-                            if (fromStdIn) {
+                            /* if (fromStdIn) {
                                 System.out.println("Priority not changed. There's no element with such ID!");
                             } else {
                                 outputFileWriter.write("Priority not changed. There's no element with such ID!\n");
-                            }
+                            } */
                         }
                     }
             }
+            monitor.stop();
             if (fromStdIn) {
                 scheduler.getSh().writeHeap();
                 scheduler.writeStats();
+                scheduler.writeTime(monitor);
             } else {
                 scheduler.getSh().writeHeap(outputFileWriter);
                 scheduler.writeStats(outputFileWriter);
+                scheduler.writeTime(monitor, outputFileWriter);
                 outputFileWriter.close();
             }
     }

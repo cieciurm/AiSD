@@ -5,15 +5,14 @@ import com.jamonapi.MonitorFactory;
 import java.util.Random;
 
 public class StatsGenerator {
-    private final static int NUMBER_OF_REPETITIONS = 1;
-    
     public static void main(String[] args) {
         if (args.length == 0) {
-            System.out.println("Enter as a argument size of the heap (100, 1 000, 10 000, 100 000 ...).");     
+            System.out.println("Enter two arguments:\n - number of repetitions, \n - number of elements");     
             return;
         }
             
-        int size = 100000; //Integer.parseInt(args[0]);
+        int numberOfRepetitions = Integer.parseInt(args[0]);
+        int size = Integer.parseInt(args[1]);
         
         JScheduler scheduler = new JScheduler();
         Monitor add = null;
@@ -21,14 +20,13 @@ public class StatsGenerator {
         Monitor change = null;
         
         /* Loop repeated NUMBER_OF_REPETITIONS times to improve results */
-        for (int j = 1; j <= NUMBER_OF_REPETITIONS; j++) {
+        for (int j = 1; j <= numberOfRepetitions; j++) {
             /* Creating scheduler */
             for (int i = 0; i < size; i++) {
-								System.out.println("Adding " + i + ". element");
                 int p = Math.abs((new Random()).nextInt());
                 scheduler.getSh().add(new Job(i, p));
             }
-						System.out.println("Starting monitoring");
+
             /* Monitoring */
             add = MonitorFactory.start("* Adding a job to the scheduler already containing " + size + " jobs");
             int m = Math.abs((new Random()).nextInt());
@@ -61,5 +59,4 @@ public class StatsGenerator {
         System.out.println("* Started: " + change.getLastAccess());
         System.out.println("**************************************************");
     }
-    
 }
