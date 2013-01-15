@@ -9,6 +9,4 @@ $(PDF): $(TEX)
 	pdflatex $(TEX)
 
 clean:
-	$(RM) $(PDF)
-	
-	
+	rm $(PDF) *.log *.out *.toc *.aux

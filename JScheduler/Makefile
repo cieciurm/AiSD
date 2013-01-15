@@ -11,20 +11,11 @@ default: JScheduler.class
 JScheduler.class: 
 	$(COMP) -sourcepath $(SRCDIR) -cp $(JAMONDIR) src/scheduler/JScheduler.java
 
-test1: JScheduler.class
-	$(JVM) -cp $(CPDIR) $(JSCHEDULER) -f test/test1
-
-test2: JScheduler.class
-	$(JVM) -cp $(CPDIR) $(JSCHEDULER) -f test/test2
-
-test3: JScheduler.class
-	$(JVM) -cp $(CPDIR) $(JSCHEDULER) -f test/test3
-
 stats: StatsGenerator.class
-	java -cp $(CPDIR) scheduler.StatsGenerator 10 100
+	$(JVM) -cp $(CPDIR) scheduler.StatsGenerator 10 100
 
 StatsGenerator.class:
-	javac -sourcepath $(SRCDIR) -cp $(JAMONDIR) src/scheduler/StatsGenerator.java
+	$(COMP) -sourcepath $(SRCDIR) -cp $(JAMONDIR) src/scheduler/StatsGenerator.java
 
 clean:
 	cd src/scheduler && rm *.class 
